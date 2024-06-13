@@ -2,13 +2,15 @@ import Link from "next/link";
 import React from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { LogOut } from "lucide-react";
 
-const navbar = () => {
+const Navbar = () => {
   return (
-    <header className="w-full py-4 px-8 flex justify-center items center">
+    <header className="w-full py-4 px-8 flex justify-between items center">
       <Image
         src="/logo.svg"
         width={40}
+        height={40}
         alt="Snapchat logo"
         className="cursor-pointer"
       />
@@ -26,8 +28,18 @@ const navbar = () => {
           <Link href="/chat"> Chat</Link>
         </Button>
       </div>
+      <div className="flex space-x-2">
+        <Button className="bg-black text-white rounded-full p-3 text-xs md:text-sm">
+          Watch tutorial
+        </Button>
+        <form>
+          <Button className="bg-black text-white rounded-full p-3 text-xs md:text-sm">
+            <LogOut className="cursor-pointer" />
+          </Button>
+        </form>
+      </div>
     </header>
   );
 };
 
-export default navbar;
+export default Navbar;
