@@ -7,6 +7,7 @@ const LogoutButton = () => {
     "use server";
     await signOut();
   };
+
   return (
     <>
       <form action={authAction}>

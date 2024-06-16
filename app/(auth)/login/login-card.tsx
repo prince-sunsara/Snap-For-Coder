@@ -1,14 +1,10 @@
-import { signIn } from "@/auth";
 import { Button } from "@/components/ui/button";
+import { authAction } from "@/lib/actions";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
 const LoginCard = () => {
-  async function authAction() {
-    "use server";
-    await signIn("github");
-  }
   return (
     <>
       <form className="spac-y-4" action={authAction}>
