@@ -3,7 +3,7 @@ import { Document, Model, Schema, model, models } from "mongoose";
 export interface UserInterface {
   username: String;
   fullName: String;
-  email: String;
+  gid: String;
   avatar?: string;
 }
 
@@ -23,7 +23,7 @@ const userSchema = new Schema<UserDocument>(
       type: String,
       required: true,
     },
-    email: {
+    gid: {
       type: String,
       required: true,
       unique: true,

@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import GitHub from "next-auth/providers/github";
 import connectDB from "./lib/db";
 import User from "./models/user-model";
-export const { handlers, auth } = NextAuth({
+export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
     GitHub({
       clientId: process.env.AUTH_GITHUB_ID,
@@ -13,20 +13,25 @@ export const { handlers, auth } = NextAuth({
 
   callbacks: {
     async signIn({ account, profile }) {
+      console.log(profile);
+
       if (account?.provider === "github") {
         await connectDB();
 
         try {
-          const user = await User.findOne({ email: profile?.email });
+          const user = await User.findOne({ gid: profile?.id });
+
+          // signup if user not fount
           if (!user) {
             const newUser = await User.create({
-              email: profile?.email,
+              gid: profile?.id,
               username: profile?.login,
-              fullName: profile?.fullName,
+              fullName: profile?.name,
               avatar: profile?.avatar_url,
             });
 
-            await newUser.save(); // indicate successfully signin
+            await newUser.save(); // indicate successfully signup
+            return true;
           }
 
           return true; // indicate successfully signin

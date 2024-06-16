@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Snap For Coder | A Clone App",
+  title: "Snap For Coder",
   description: "Alternative of SnapChat for Programmers, built by Next.js",
 };
 
