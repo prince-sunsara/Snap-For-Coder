@@ -13,7 +13,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
   callbacks: {
     async signIn({ account, profile }) {
-      console.log(profile);
+      // console.log(profile); // for debugg
 
       if (account?.provider === "github") {
         await connectDB();

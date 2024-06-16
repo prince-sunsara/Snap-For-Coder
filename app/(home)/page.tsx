@@ -1,9 +1,13 @@
+import { auth } from "@/auth";
 import Navbar from "@/components/shared/Navbar";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Home() {
+export default async function Home() {
+  const session = await auth();
+  // console.log(session);
+
   return (
     <main className="bg-[#fffc00]">
       <div className="flex flex-col items-center justify-center min-h-screen max-w-7xl mx-auto">
@@ -11,9 +15,7 @@ export default function Home() {
 
         <main className="flex flex-1 flex-col items-center justify-center px-8 mt-4 md:flex-row">
           <div className="flex-1 text-center h-full md:text-left">
-            <h1 className="text-4xl md:text-6xl font-bold">
-              Snap for programmers!
-            </h1>
+            <h1 className="text-4xl md:text-6xl font-bold">Snap For Coders!</h1>
             <p className="mt-4 font-semibold text-xl">
               Share your code with your friend to get feedback and improve your
               code.
@@ -23,19 +25,19 @@ export default function Home() {
                 What are your waiting for?
               </p>
             </div>
-            {true ? (
+            {session ? (
               <Button
                 asChild
                 className="mt-4 flex items-center bg-black text-white rounded-lg gap-2 mx-auto md:mx-0"
               >
-                <Link href={"/login"} className="max-w-max">
+                <Link href={"/chat"} className="max-w-max">
                   <Image
                     src={"/logo.svg"}
                     alt="Snapchat Logo"
                     width={20}
                     height={20}
                   />
-                  Login to explore
+                  Start chatting
                 </Link>
               </Button>
             ) : (
@@ -50,7 +52,7 @@ export default function Home() {
                     width={20}
                     height={20}
                   />
-                  Start chatting
+                  Login to explore
                 </Link>
               </Button>
             )}

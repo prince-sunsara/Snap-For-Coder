@@ -2,7 +2,7 @@ import Link from "next/link";
 import React from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { LogOut } from "lucide-react";
+import LogoutButton from "./LogoutButton";
 
 const Navbar = () => {
   return (
@@ -32,11 +32,7 @@ const Navbar = () => {
         <Button className="bg-black text-white rounded-full p-3 text-xs md:text-sm">
           Watch tutorial
         </Button>
-        <form>
-          <Button className="bg-black text-white rounded-full p-3 text-xs md:text-sm">
-            <LogOut className="cursor-pointer" />
-          </Button>
-        </form>
+        <LogoutButton />
       </div>
     </header>
   );
