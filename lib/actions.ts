@@ -1,8 +1,19 @@
 "use server";
-import { signIn } from "@/auth";
+import { signIn, signOut } from "@/auth";
 
 // both for signin and signup
 export async function authAction() {
-  "use server";
-  await signIn("github");
+  try {
+    await signIn("github");
+  } catch (error: any) {
+    if (error.message == "NEXT_REDIRECT") {
+      throw error;
+    }
+    return error.message;
+  }
 }
+
+export const logoutAction = async () => {
+  "use server";
+  await signOut();
+};
