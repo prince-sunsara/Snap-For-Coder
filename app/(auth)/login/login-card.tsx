@@ -1,8 +1,11 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { authAction } from "@/lib/actions";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { useFormStatus } from "react-dom";
 
 const LoginCard = () => {
   return (
@@ -22,8 +25,9 @@ const LoginCard = () => {
 };
 
 function LoginButton() {
+  const { pending } = useFormStatus();
   return (
-    <Button className="w-full flex gap-2">
+    <Button className="w-full flex gap-2" disabled={pending}>
       <Image src={"/github.svg"} width={20} height={20} alt="Gitub Logo" />
       Login with github
     </Button>
