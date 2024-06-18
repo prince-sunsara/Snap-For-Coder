@@ -11,7 +11,9 @@ export default async function connectDB() {
 
   // don't have any connection
   try {
-    const conn = await mongoose.connect("mongodb://localhost:27017/snapX");
+    const conn = await mongoose.connect(
+      "mongodb://localhost:27017/snap-for-coder"
+    );
     cachedConnection = conn.connection;
 
     console.log("Successfully connected to database");

@@ -5,14 +5,17 @@ import { NextResponse } from "next/server";
 
 export const GET = async () => {
   try {
-    const session = auth();
+    const session = await auth();
+
     if (!session) return;
     await connectDB();
 
     const users: UserInterface[] = await User.find();
     // filter the authenticated users
+    // console.log(users[0]._id.toString());
+
     const filteredUsers = users.filter(
-      (user) => user._id.toString() !== session.user._id.toString()
+      (user) => user?._id !== session?.user?._id
     );
 
     return NextResponse.json(filteredUsers);

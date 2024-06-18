@@ -30,7 +30,8 @@ const userSchema = new Schema<UserDocument>(
     },
     avatar: {
       type: String,
-      default: "",
+      default:
+        "https://i1.wp.com/hypebeast.com/image/ht/2015/02/you-can-now-play-music-while-recording-your-snapchats-0.jpg?w=516",
     },
   },
   {

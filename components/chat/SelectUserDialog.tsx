@@ -7,7 +7,10 @@ import {
   DialogHeader,
 } from "../ui/dialog";
 import { Button } from "../ui/button";
-import { SearchIcon } from "lucide-react";
+import { Loader2, SearchIcon } from "lucide-react";
+import { UserDocument } from "@/models/user-model";
+import UserCard from "./UserCard";
+import { TextMessageSent } from "../svgs/ChatSvg";
 
 interface SelectUserDialogProps {
   selectedFile: string | undefined;
@@ -23,6 +26,8 @@ const SelectUserDialog = ({
 }: SelectUserDialogProps) => {
   const [users, setUsers] = useState([]);
   const [isFetchingUsers, setIsFetchingUsers] = useState(false);
+  const [isSendingMessage, setIsSendingMessage] = useState(false);
+  const [selectUser, setSelectUser] = useState<UserDocument | null>(null);
 
   useEffect(() => {
     const getUsers = async () => {
@@ -37,6 +42,8 @@ const SelectUserDialog = ({
         setIsFetchingUsers(false);
       }
     };
+
+    getUsers();
   }, []);
 
   return (
@@ -46,7 +53,7 @@ const SelectUserDialog = ({
           className="bg-sigMain border border-sigColorBgBorder text-white max-w-xs"
           onInteractOutside={onClose}
         >
-          <DialogHeader className="flex-1">
+          <DialogHeader>
             <div className="text-gray-400 p-1 gap-2 flex rounded-full border bg-sigSurface border-sigColorBgBorder">
               <SearchIcon className="text-gray-400 w-5" />
               <input
@@ -56,6 +63,23 @@ const SelectUserDialog = ({
               />
             </div>
             <p className="font-semibold py-2">Chats:</p>
+
+            <div className="max-h-52 flex flex-col overflow-auto">
+              {users.map((user: UserDocument) => (
+                <div
+                  key={user._id}
+                  className="bg-sigColorBgBorder mb-2 rounded-md"
+                >
+                  <UserCard user={user} />
+                </div>
+              ))}
+            </div>
+
+            {isFetchingUsers && (
+              <div className="flex justify-center items-center">
+                <Loader2 className="w-8 h-8 animate-spin" />
+              </div>
+            )}
           </DialogHeader>
           <DialogFooter className="mx-auto flex items-center">
             <DialogClose asChild>
@@ -68,6 +92,24 @@ const SelectUserDialog = ({
                 Cancle
               </Button>
             </DialogClose>
+
+            <Button className="rounded-full px-4" onClick={onPrev} size={"sm"}>
+              Prev
+            </Button>
+
+            <Button
+              className="rounded-full px-4 bg-sigButton hover:bg-sigButtonHover"
+              size={"sm"}
+            >
+              {isSendingMessage ? (
+                <Loader2 className="w-6 h-6 animate-spin" />
+              ) : (
+                <>
+                  Send To{" "}
+                  <TextMessageSent className="text-white my-auto scale-95" />
+                </>
+              )}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
