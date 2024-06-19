@@ -5,6 +5,7 @@ import { Button } from "../ui/button";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import Image from "next/image";
 import { SearchIcon } from "lucide-react";
+import Chats from "./Chats";
 
 const ChatSidebar = async () => {
   const session = await auth();
@@ -33,6 +34,7 @@ const ChatSidebar = async () => {
           </div>
         </div>
       </div>
+      <Chats />
     </aside>
   );
 };
