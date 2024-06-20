@@ -17,7 +17,7 @@ export const readFileDataUrl = (file: File | Blob): Promise<string> => {
 };
 
 // 2024-06-16T11:20:31.564+00:00 ==> Jun 16
-export const formData = (inputDate: Date): string => {
+export const formateDate = (inputDate: Date): string => {
   const date = new Date(inputDate);
   const options: Intl.DateTimeFormatOptions = {
     month: "short",
