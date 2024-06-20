@@ -5,8 +5,10 @@ import Chat from "./Chat";
 
 const Chats = async () => {
   const session = await auth();
+  // console.log(session); // for debug
+
   const chats = session?.user ? await getUsersForSidebar(session.user._id) : [];
-  //   console.log(chats);
+  // console.log(chats);  // for debug
 
   return (
     <nav className="flex-1 overflow-y-auto">

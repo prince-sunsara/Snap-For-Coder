@@ -15,3 +15,14 @@ export const readFileDataUrl = (file: File | Blob): Promise<string> => {
     reader.readAsDataURL(file);
   });
 };
+
+// 2024-06-16T11:20:31.564+00:00 ==> Jun 16
+export const formData = (inputDate: Date): string => {
+  const date = new Date(inputDate);
+  const options: Intl.DateTimeFormatOptions = {
+    month: "short",
+    day: "numeric",
+  };
+  const formattedDate: string = date.toLocaleDateString("en-US", options);
+  return formattedDate;
+};
