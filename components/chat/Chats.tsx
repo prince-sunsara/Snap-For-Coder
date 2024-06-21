@@ -3,13 +3,10 @@ import { getUsersForSidebar } from "@/lib/data";
 import React from "react";
 import Chat from "./Chat";
 
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
 const Chats = async () => {
   const session = await auth();
   // console.log(session); // for debug
 
-  await sleep(3000);
   const chats = session?.user ? await getUsersForSidebar(session.user._id) : [];
   // console.log(chats);  // for debug
 
