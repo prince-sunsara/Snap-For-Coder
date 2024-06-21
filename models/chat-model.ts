@@ -13,12 +13,7 @@ export interface ChatDocument extends ChatInterface, Document {
 const chatSchema = new Schema<ChatDocument>(
   {
     participants: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-    messages: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Message",
-      },
-    ],
+    messages: [{ type: mongoose.Schema.Types.ObjectId, ref: "Message" }],
   },
   {
     timestamps: true,
