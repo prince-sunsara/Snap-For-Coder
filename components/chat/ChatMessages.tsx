@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React from "react";
+import React, { useRef } from "react";
 
 const messages = [
   {
@@ -59,6 +59,7 @@ const messages = [
 ];
 
 const ChatMessages = () => {
+  const lastMsgRef = useRef<HTMLDivElement>(null);
   const session = { user: { _id: "1" } };
   return (
     <>
@@ -70,7 +71,7 @@ const ChatMessages = () => {
           idx > 0 && messages[idx - 1].sender._id === msg.sender._id;
 
         return (
-          <div className="w-full" key={msg._id}>
+          <div className="w-full" key={msg._id} ref={lastMsgRef}>
             {!isPrevMsgFromSameSender && (
               <p
                 className={`font-bold mt-2 text-xs ${
