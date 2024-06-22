@@ -12,7 +12,7 @@ export interface MessageInterface {
   sender: Types.ObjectId | PopulatedDoc<UserDocument>;
   receiver: Types.ObjectId | PopulatedDoc<UserDocument>;
   content: string;
-  messageType: "text" | "images";
+  messageType: "text" | "image";
   opened: boolean;
 }
 
