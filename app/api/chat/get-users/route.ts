@@ -6,19 +6,13 @@ import { NextResponse } from "next/server";
 export const GET = async () => {
   try {
     const session = await auth();
+    // console.log(session); // for debugg
 
     if (!session) return;
     await connectDB();
 
-    const users: UserInterface[] = await User.find();
-    // filter the authenticated users
-    // console.log(users[0]._id.toString());
-
-    const filteredUsers = users.filter(
-      (user) => user?._id !== session?.user?._id
-    );
-
-    return NextResponse.json(filteredUsers);
+    const users: UserInterface[] = await User.find({});
+    return NextResponse.json(users);
   } catch (error) {
     console.log("Error in get-users route handler: ", error);
     throw error;

@@ -1,11 +1,4 @@
-import mongoose, {
-  Document,
-  Model,
-  Schema,
-  Types,
-  model,
-  mongo,
-} from "mongoose";
+import mongoose, { Document, Model, Schema, Types, model } from "mongoose";
 
 export interface MessageInterface {
   sender: Types.ObjectId;

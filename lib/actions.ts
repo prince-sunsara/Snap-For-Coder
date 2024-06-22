@@ -62,6 +62,8 @@ export const sendMessageAction = async (
       });
     } else {
       chat?.messages?.push(newMessage._id);
+      console.log(chat);
+
       await chat.save();
     }
 
