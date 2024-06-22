@@ -12,13 +12,12 @@ import { Loader2 } from "lucide-react";
 const SendMsgInput = () => {
   const [messageContent, setMessageContent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const params = useParams<{ id: string }>();
-  const receiverId = params.id;
+  const { id } = useParams<{ id: string }>();
 
   const handleSendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await sendMessageAction(receiverId, messageContent, "text");
+      await sendMessageAction(id, messageContent, "text");
       setMessageContent("");
     } catch (error) {
       console.log(error);

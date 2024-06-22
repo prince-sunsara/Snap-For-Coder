@@ -8,7 +8,7 @@ import Chat, { ChatDocument } from "@/models/chat-model";
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
+  api_secret: process.env.CLOUDINARY_API_SECRETE,
 });
 
 // both for signin and signup
@@ -31,11 +31,12 @@ export const logoutAction = async () => {
 export const sendMessageAction = async (
   receiverId: string,
   content: string,
-  messageType: "image" | "text"
+  messageType: "text" | "image"
 ) => {
   try {
     const session = await auth();
     if (!session) return;
+
     await connectDB();
     const senderId = session.user._id;
 
@@ -50,6 +51,7 @@ export const sendMessageAction = async (
       content: uploadedResponse?.secure_url || content,
       messageType,
     });
+    // console.log(newMessage);
 
     let chat: ChatDocument | null = await Chat.findOne({
       participants: { $all: [senderId, receiverId] },
@@ -62,8 +64,6 @@ export const sendMessageAction = async (
       });
     } else {
       chat?.messages?.push(newMessage._id);
-      console.log(chat);
-
       await chat.save();
     }
 
