@@ -1,8 +1,16 @@
-import mongoose, { Document, Model, Schema, Types, model } from "mongoose";
+import mongoose, {
+  Document,
+  Model,
+  PopulatedDoc,
+  Schema,
+  Types,
+  model,
+} from "mongoose";
+import { UserDocument } from "./user-model";
 
 export interface MessageInterface {
-  sender: Types.ObjectId;
-  receiver: Types.ObjectId;
+  sender: Types.ObjectId | PopulatedDoc<UserDocument>;
+  receiver: Types.ObjectId | PopulatedDoc<UserDocument>;
   content: string;
   messageType: "text" | "images";
   opened: boolean;

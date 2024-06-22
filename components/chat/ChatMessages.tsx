@@ -1,67 +1,74 @@
 "use client";
+import { MessageDocument } from "@/models/message-model";
+import { Session } from "next-auth";
 import Image from "next/image";
 import React, { useRef } from "react";
 
-const messages = [
-  {
-    _id: "1",
-    content: "Hello, how are you?",
-    sender: {
-      _id: "1",
-      fullName: "John Doe",
-    },
-    messageType: "text",
-  },
-  {
-    _id: "2",
-    content: "I'm good, thanks! How about you?",
-    sender: {
-      _id: "2",
-      fullName: "Jane Smith",
-    },
-    messageType: "text",
-  },
-  {
-    _id: "3",
-    content: "Check out this picture.",
-    sender: {
-      _id: "1",
-      fullName: "John Doe",
-    },
-    messageType: "text",
-  },
-  {
-    _id: "4",
-    content: "That's a great photo!",
-    sender: {
-      _id: "2",
-      fullName: "Jane Smith",
-    },
-    messageType: "text",
-  },
-  {
-    _id: "5",
-    content: "Here's a link to the article.",
-    sender: {
-      _id: "1",
-      fullName: "John Doe",
-    },
-    messageType: "text",
-  },
-  {
-    _id: "6",
-    content: "And yah, Thanks for conversation",
-    sender: {
-      _id: "1",
-      fullName: "John Doe",
-    },
-    messageType: "text",
-  },
-];
+// const messages = [
+//   {
+//     _id: "1",
+//     content: "Hello, how are you?",
+//     sender: {
+//       _id: "1",
+//       fullName: "John Doe",
+//     },
+//     messageType: "text",
+//   },
+//   {
+//     _id: "2",
+//     content: "I'm good, thanks! How about you?",
+//     sender: {
+//       _id: "2",
+//       fullName: "Jane Smith",
+//     },
+//     messageType: "text",
+//   },
+//   {
+//     _id: "3",
+//     content: "Check out this picture.",
+//     sender: {
+//       _id: "1",
+//       fullName: "John Doe",
+//     },
+//     messageType: "text",
+//   },
+//   {
+//     _id: "4",
+//     content: "That's a great photo!",
+//     sender: {
+//       _id: "2",
+//       fullName: "Jane Smith",
+//     },
+//     messageType: "text",
+//   },
+//   {
+//     _id: "5",
+//     content: "Here's a link to the article.",
+//     sender: {
+//       _id: "1",
+//       fullName: "John Doe",
+//     },
+//     messageType: "text",
+//   },
+//   {
+//     _id: "6",
+//     content: "And yah, Thanks for conversation",
+//     sender: {
+//       _id: "1",
+//       fullName: "John Doe",
+//     },
+//     messageType: "text",
+//   },
+// ];
 
-const ChatMessages = () => {
+type ChatMessagesProps = {
+  messages: MessageDocument[];
+  session: Session | null;
+};
+
+const ChatMessages = ({ messages, session }: ChatMessagesProps) => {
   const lastMsgRef = useRef<HTMLDivElement>(null);
-  const session = { user: { _id: "1" } };
+
   return (
     <>
       {messages.map((msg, idx) => {

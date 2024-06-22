@@ -1,5 +1,7 @@
 import Message, { MessageDocument } from "@/models/message-model";
 import User, { UserDocument } from "@/models/user-model";
+import connectDB from "./db";
+import Chat, { ChatDocument } from "@/models/chat-model";
 
 export const getUsersForSidebar = async (authUserId: string) => {
   try {
@@ -37,6 +39,45 @@ export const getUsersForSidebar = async (authUserId: string) => {
     return userInfo;
   } catch (error) {
     console.log("Error in getUserForSidebar: ", error);
+    throw error;
+  }
+};
+
+export const getUserProfile = async (userId: string) => {
+  try {
+    await connectDB();
+    const user: UserDocument | null = await User.findById(userId);
+    if (!user) {
+      throw new Error("User not found");
+    }
+    return user;
+  } catch (error) {
+    console.log("Error in getUserProfile: ", error);
+    throw error;
+  }
+};
+
+export const getMessages = async (authUser: string, receiver: string) => {
+  try {
+    await connectDB();
+
+    const chat: ChatDocument | null = await Chat.findOne({
+      participants: { $all: [authUser, receiver] },
+    }).populate({
+      path: "messages",
+      populate: {
+        path: "sender",
+        model: "User",
+        select: "fullName",
+      },
+    });
+
+    if (!chat) return [];
+
+    const messages = chat.messages;
+    return messages;
+  } catch (error) {
+    console.log(error);
     throw error;
   }
 };
