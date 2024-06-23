@@ -1,5 +1,6 @@
 "use client";
 import { MessageDocument } from "@/models/message-model";
+import { PopulatedDoc } from "mongoose";
 import { Session } from "next-auth";
 import Image from "next/image";
 import React, { useRef } from "react";
@@ -62,7 +63,7 @@ import React, { useRef } from "react";
 // ];
 
 type ChatMessagesProps = {
-  messages: MessageDocument[];
+  messages: MessageDocument[] | PopulatedDoc<MessageDocument>[];
   session: Session | null;
 };
 
@@ -71,15 +72,15 @@ const ChatMessages = ({ messages, session }: ChatMessagesProps) => {
 
   return (
     <>
-      {messages.map((msg, idx) => {
-        const amISender = msg.sender._id === session?.user?._id;
-        const senderFullName = msg.sender.fullName.toUpperCase();
-        const isMsgImg = msg.messageType === "image";
+      {messages.map((message, idx) => {
+        const amISender = message?.sender?._id === session?.user?._id;
+        const senderFullName = message?.sender?.fullName.toUpperCase();
+        const isMsgImg = message?.messageType === "image";
         const isPrevMsgFromSameSender =
-          idx > 0 && messages[idx - 1].sender._id === msg.sender._id;
+          idx > 0 && messages[idx - 1]?.sender?._id === message?.sender?._id;
 
         return (
-          <div className="w-full" key={msg._id} ref={lastMsgRef}>
+          <div className="w-full" key={message?._id} ref={lastMsgRef}>
             {!isPrevMsgFromSameSender && (
               <p
                 className={`font-bold mt-2 text-xs ${
@@ -98,7 +99,7 @@ const ChatMessages = ({ messages, session }: ChatMessagesProps) => {
                 {isMsgImg ? (
                   <div className="relative">
                     <Image
-                      src={msg.content}
+                      src={message?.content}
                       width={200}
                       height={200}
                       alt="Image"
@@ -106,7 +107,7 @@ const ChatMessages = ({ messages, session }: ChatMessagesProps) => {
                     />
                   </div>
                 ) : (
-                  <p className="text-sm">{msg.content}</p>
+                  <p className="text-sm">{message?.content}</p>
                 )}
               </div>
             </div>

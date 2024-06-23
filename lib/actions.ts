@@ -4,6 +4,8 @@ import connectDB from "./db";
 import { v2 as cloudinary } from "cloudinary";
 import Message, { MessageDocument } from "@/models/message-model";
 import Chat, { ChatDocument } from "@/models/chat-model";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -68,10 +70,36 @@ export const sendMessageAction = async (
     }
 
     // REVALIDATE PATH SHOULD BE ADDED TO HERE
+    revalidatePath(`/chat/${receiverId}`);
 
     return newMessage;
   } catch (error: any) {
     console.log("Send message cloudinary error\n", error);
     throw error;
   }
+};
+
+export const deleteChatAction = async (userId: string) => {
+  try {
+    await connectDB();
+    const { user } = (await auth()) || {};
+    if (!user) return;
+    const chat = await Chat.findOne({
+      participants: { $all: [user._id, userId] },
+    });
+    if (!chat) return;
+
+    const messageIds = chat.messages.map((messageId) => messageId.toString());
+    await Chat.deleteMany({ _id: { $in: messageIds } });
+    await Chat.deleteOne({ _id: chat._id });
+
+    revalidatePath(`/chat/[id]`, "page");
+
+    // this will throw an error
+    // redirect("/chat");
+  } catch (error) {
+    console.log("error while deleting the chat\n", error);
+    throw error;
+  }
+  redirect("/chat");
 };

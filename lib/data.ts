@@ -75,7 +75,7 @@ export const getMessages = async (authUser: string, receiver: string) => {
     if (!chat) return [];
 
     const messages = chat.messages;
-    return messages;
+    return JSON.parse(JSON.stringify(messages));
   } catch (error) {
     console.log(error);
     throw error;

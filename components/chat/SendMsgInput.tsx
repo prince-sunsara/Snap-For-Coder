@@ -22,6 +22,7 @@ const SendMsgInput = () => {
     } catch (error) {
       console.log(error);
     } finally {
+      setMessageContent("");
       setIsLoading(false);
     }
   };
