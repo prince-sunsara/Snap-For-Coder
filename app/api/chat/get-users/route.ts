@@ -12,7 +12,10 @@ export const GET = async () => {
     await connectDB();
 
     const users: UserInterface[] = await User.find({});
-    return NextResponse.json(users);
+    const filteredUsers = users.filter(
+      (user) => user.email !== session.user.email
+    );
+    return NextResponse.json(filteredUsers);
   } catch (error) {
     console.log("Error in get-users route handler: ", error);
     throw error;

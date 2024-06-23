@@ -11,6 +11,8 @@ import { Loader2, SearchIcon } from "lucide-react";
 import { UserDocument } from "@/models/user-model";
 import UserCard from "./UserCard";
 import { TextMessageSent } from "../svgs/ChatSvg";
+import { sendMessageAction } from "@/lib/actions";
+import { useRouter } from "next/navigation";
 
 interface SelectUserDialogProps {
   selectedFile: string | undefined;
@@ -27,7 +29,8 @@ const SelectUserDialog = ({
   const [users, setUsers] = useState([]);
   const [isFetchingUsers, setIsFetchingUsers] = useState(false);
   const [isSendingMessage, setIsSendingMessage] = useState(false);
-  const [selectUser, setSelectUser] = useState<UserDocument | null>(null);
+  const [selectedUser, setSelectedUser] = useState<UserDocument | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const getUsers = async () => {
@@ -45,6 +48,23 @@ const SelectUserDialog = ({
 
     getUsers();
   }, []);
+
+  const handleSelectUser = (user: UserDocument) => {
+    setSelectedUser(user);
+  };
+
+  const handleSendMessage = async () => {
+    setIsSendingMessage(true);
+    try {
+      await sendMessageAction(selectedUser?._id, selectedFile, "image");
+      router.push(`/chat/${selectedUser?._id}`);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsSendingMessage(false);
+      onClose();
+    }
+  };
 
   return (
     <>
@@ -70,7 +90,11 @@ const SelectUserDialog = ({
                   key={user._id}
                   className="bg-sigColorBgBorder mb-2 rounded-md"
                 >
-                  <UserCard user={user} />
+                  <UserCard
+                    user={user}
+                    handleSelectUser={handleSelectUser}
+                    selectedUser={selectedUser}
+                  />
                 </div>
               ))}
             </div>
@@ -100,6 +124,8 @@ const SelectUserDialog = ({
             <Button
               className="rounded-full px-4 bg-sigButton hover:bg-sigButtonHover"
               size={"sm"}
+              onClick={handleSendMessage}
+              disabled={!selectedUser || isSendingMessage}
             >
               {isSendingMessage ? (
                 <Loader2 className="w-6 h-6 animate-spin" />
